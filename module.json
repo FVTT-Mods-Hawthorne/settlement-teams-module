@@ -1,0 +1,13 @@
+{
+  "id": "settlement-teams",
+  "title": "Settlement Teams",
+  "description": "Teams and Leaders for a weekly settlement game: players sort refugees into Teams without seeing the NPC sheets, with skill breakdowns, quick rolls, Passive Scores, Injuries, weekly actions and a Stash per Team.",
+  "version": "0.1.0",
+  "authors": [{ "name": "Force" }],
+  "compatibility": { "minimum": "13", "verified": "14" },
+  "esmodules": ["scripts/module.mjs"],
+  "styles": ["styles/module.css"],
+  "languages": [{ "lang": "en", "name": "English", "path": "lang/en.json" }],
+  "socket": true,
+  "license": "MIT"
+}

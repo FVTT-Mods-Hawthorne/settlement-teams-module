@@ -1,0 +1,45 @@
+.settlement-teams .window-content { padding: 0; overflow: hidden; }
+.settlement-teams .st-body { height: 100%; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 10px; }
+.settlement-teams .st-layout { display: grid; grid-template-columns: 250px 1fr; gap: 10px; align-items: start; }
+.settlement-teams .st-pool, .settlement-teams .st-team, .settlement-teams .st-admin { border: 1px solid var(--color-border-light-tertiary, #7a7971); border-radius: 6px; padding: 8px; background: rgba(0, 0, 0, 0.06); }
+.settlement-teams .st-pool { display: flex; flex-direction: column; gap: 4px; min-height: 120px; position: sticky; top: 0; }
+.settlement-teams .st-teams { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 10px; }
+.settlement-teams .st-team { display: flex; flex-direction: column; gap: 6px; }
+.settlement-teams .st-team > header { display: flex; align-items: center; gap: 8px; }
+.settlement-teams .st-team > header h3, .settlement-teams .st-name { flex: 1; margin: 0; font-size: 1.15em; font-weight: bold; border: none; }
+.settlement-teams h3 { margin: 0 0 4px; border: none; }
+.settlement-teams .st-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.settlement-teams .st-row input[type="text"] { flex: 1; min-width: 120px; }
+.settlement-teams .st-row input[type="number"] { width: 70px; }
+.settlement-teams .st-row button, .settlement-teams .st-stash button { width: auto; flex: 0 0 auto; line-height: 1.6; }
+.settlement-teams .st-row select { width: auto; max-width: 190px; }
+.settlement-teams label { display: inline-flex; align-items: center; gap: 4px; }
+.settlement-teams .st-muted { opacity: 0.65; font-size: 0.9em; }
+.settlement-teams .st-warn { background: rgba(170, 40, 40, 0.2); border: 1px solid #a33; border-radius: 4px; padding: 4px 8px; margin: 0; }
+.settlement-teams .st-chip { display: flex; align-items: center; gap: 6px; padding: 3px 4px; border-radius: 4px; background: rgba(255, 255, 255, 0.08); border: 1px solid transparent; }
+.settlement-teams .st-chip[draggable="true"] { cursor: grab; }
+.settlement-teams .st-chip.st-leader { border-color: #b8860b; }
+.settlement-teams .st-chip img, .settlement-teams .st-noimg { width: 30px; height: 30px; flex: 0 0 30px; border: none; border-radius: 50%; object-fit: cover; display: inline-flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.2); }
+.settlement-teams .st-chip-text { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.15; }
+.settlement-teams .st-chip-text small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0.75; }
+.settlement-teams .st-chip select { width: 96px; flex: 0 0 96px; height: 24px; font-size: 0.85em; }
+.settlement-teams .st-link { cursor: pointer; }
+.settlement-teams .st-members, .settlement-teams .st-leaderslot { display: flex; flex-direction: column; gap: 3px; }
+.settlement-teams .st-pips { display: inline-flex; gap: 3px; }
+.settlement-teams .st-pip { width: 14px; height: 14px; border-radius: 50%; border: 1px solid #8a2222; cursor: pointer; }
+.settlement-teams .st-pip.on { background: #b02a2a; }
+.settlement-teams .st-tag { display: inline-flex; align-items: center; gap: 4px; padding: 1px 6px; border-radius: 10px; background: rgba(60, 110, 160, 0.3); }
+.settlement-teams .st-x { width: 26px; flex: 0 0 26px; padding: 0; }
+.settlement-teams details > summary { cursor: pointer; font-weight: bold; padding: 2px 0; }
+.settlement-teams .st-scroll { overflow-x: auto; }
+.settlement-teams table { margin: 4px 0; font-size: 0.9em; }
+.settlement-teams table th, .settlement-teams table td { padding: 2px 5px; text-align: center; white-space: nowrap; }
+.settlement-teams table th:first-child, .settlement-teams table td:first-child { text-align: left; }
+.settlement-teams .st-roll { cursor: pointer; }
+.settlement-teams .st-roll:hover { background: rgba(255, 255, 255, 0.2); }
+.settlement-teams .st-best { font-weight: bold; }
+.settlement-teams .st-passive { font-weight: bold; border-top: 1px solid currentColor; }
+.settlement-teams .st-stash img { width: 20px; height: 20px; border: none; vertical-align: middle; margin-right: 4px; }
+.settlement-teams .st-stash input[type="number"] { width: 56px; }
+.settlement-teams textarea { width: 100%; resize: vertical; }
+.settlement-teams .st-roster input[type="text"] { width: 100%; }
