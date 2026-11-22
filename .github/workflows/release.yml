@@ -1,0 +1,97 @@
+name: Publish beta release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tagged source
+        uses: actions/checkout@v4
+
+      - name: Validate version tag and module manifest
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          from pathlib import Path
+
+          manifest = json.loads(Path("module.json").read_text(encoding="utf-8"))
+          version = manifest["version"]
+          tag = f"v{version}"
+          ref_name = os.environ["GITHUB_REF_NAME"]
+          repository = os.environ["GITHUB_REPOSITORY"]
+
+          assert re.fullmatch(r"v\d+\.\d+\.\d+", ref_name), (
+              f"Release tags must use vMAJOR.MINOR.PATCH; received {ref_name!r}"
+          )
+          assert ref_name == tag, (
+              f"Tag {ref_name!r} does not match module.json version {version!r}"
+          )
+
+          expected_manifest = (
+              f"https://github.com/{repository}/releases/download/{tag}/module.json"
+          )
+          expected_zip = f"settlement-teams-{tag}.zip"
+          expected_download = (
+              f"https://github.com/{repository}/releases/download/{tag}/{expected_zip}"
+          )
+          assert manifest.get("manifest") == expected_manifest, (
+              f"Unexpected manifest URL: {manifest.get('manifest')!r}"
+          )
+          assert manifest.get("download") == expected_download, (
+              f"Unexpected download URL: {manifest.get('download')!r}"
+          )
+
+          with Path(os.environ["GITHUB_ENV"]).open("a", encoding="utf-8") as env:
+              env.write(f"RELEASE_TAG={tag}\n")
+              env.write(f"RELEASE_ZIP={expected_zip}\n")
+          PY
+
+      - name: Build installable Foundry ZIP
+        shell: bash
+        run: |
+          zip -q -r "$RELEASE_ZIP" module.json README.md LICENSE scripts styles lang
+          unzip -t "$RELEASE_ZIP"
+          test "$(unzip -Z1 "$RELEASE_ZIP" | head -n 1)" = "module.json"
+          unzip -p "$RELEASE_ZIP" module.json > /tmp/packaged-module.json
+          cmp module.json /tmp/packaged-module.json
+
+      - name: Create beta release if missing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" \
+              --title "$RELEASE_TAG beta" \
+              --notes "Settlement Teams beta release. Includes a versioned module.json manifest and an installable Foundry VTT module ZIP." \
+              --prerelease \
+              --verify-tag
+          fi
+
+      - name: Upload ZIP and module.json as separate release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh release upload "$RELEASE_TAG" "$RELEASE_ZIP" module.json --clobber
+
+      - name: Verify release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh release view "$RELEASE_TAG" --json assets --jq '.assets[].name' |
+            tee /tmp/release-assets.txt
+          grep -Fx "module.json" /tmp/release-assets.txt
+          grep -Fx "$RELEASE_ZIP" /tmp/release-assets.txt
+
