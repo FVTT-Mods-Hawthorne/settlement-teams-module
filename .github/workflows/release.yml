@@ -94,4 +94,3 @@ jobs:
             tee /tmp/release-assets.txt
           grep -Fx "module.json" /tmp/release-assets.txt
           grep -Fx "$RELEASE_ZIP" /tmp/release-assets.txt
-
